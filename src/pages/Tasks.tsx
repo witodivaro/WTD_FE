@@ -1,14 +1,23 @@
 import { makeStyles } from "@material-ui/styles";
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Task from "../components/Task";
 
-import mockTasks from "../mocks/tasks";
-import { selectEditingTask } from "../redux/tasks/selectors";
-import { setEditingTask as setEditingTaskAction } from "../redux/tasks/actions";
+import {
+  selectEditingTask,
+  selectIsAddingNewTask,
+  selectTasks,
+} from "../redux/tasks/selectors";
+import {
+  fetchTasksRequest,
+  setEditingTask as setEditingTaskAction,
+  updateTaskRequest,
+} from "../redux/tasks/actions";
 
 import { default as TaskType } from "../types/Task";
+import NewTask from "../components/NewTask";
+import EditTask from "../components/EditTask";
 
 const useStyles = makeStyles({
   container: {
@@ -25,39 +34,62 @@ const useStyles = makeStyles({
 const TasksPage = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
+
+  const tasks = useSelector(selectTasks);
   const editingTask = useSelector(selectEditingTask);
+  const isAddingNewTask = useSelector(selectIsAddingNewTask);
 
-  const saveTask = (task: Partial<TaskType>) => {};
+  useEffect(() => {
+    dispatch(fetchTasksRequest());
+  }, [dispatch]);
 
-  const setEditingTask = (id: number | null) => {
-    dispatch(setEditingTaskAction(id));
+  const updateTask = (id: number, task: Partial<TaskType>) => {
+    dispatch(updateTaskRequest(id, task));
   };
+
+  const resetEditingTask = useCallback(() => {
+    dispatch(setEditingTaskAction(null));
+  }, [dispatch]);
 
   const renderedTasks = useMemo(
     () =>
-      mockTasks.map((task: TaskType) => {
-        const setEditCurrentTask = (isEditing: boolean) => {
-          if (isEditing) {
-            setEditingTask(task.id);
-          } else {
-            setEditingTask(null);
-          }
+      tasks.map((task: TaskType) => {
+        const setEditCurrentTask = () => {
+          dispatch(setEditingTaskAction(task.id));
         };
+
+        if (editingTask === task.id) {
+          const updateCurrentTask = updateTask.bind(null, task.id);
+
+          return (
+            <EditTask
+              key={task.id}
+              task={task}
+              onCancel={resetEditingTask}
+              onSave={updateCurrentTask}
+            />
+          );
+        }
 
         return (
           <Task
-            isEditing={editingTask === task.id}
-            onSave={saveTask}
-            setEdit={setEditCurrentTask}
             key={task.id}
-            {...task}
+            task={task}
+            switchToEditMode={setEditCurrentTask}
           />
         );
       }),
-    [editingTask]
+    [editingTask, dispatch, resetEditingTask, tasks]
   );
 
-  return <div className={classes.container}>{renderedTasks}</div>;
+  const renderedNewTask = isAddingNewTask ? <NewTask /> : null;
+
+  return (
+    <div className={classes.container}>
+      {renderedNewTask}
+      {renderedTasks}
+    </div>
+  );
 };
 
 export default TasksPage;

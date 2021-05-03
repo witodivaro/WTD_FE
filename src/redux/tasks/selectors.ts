@@ -8,3 +8,18 @@ export const selectEditingTask = createSelector(
   selectTasksState,
   (tasks) => tasks.editingTask
 );
+
+export const selectIsAddingNewTask = createSelector(
+  selectTasksState,
+  (tasks) => tasks.isAddingNewTask
+);
+
+export const selectTasks = createSelector(
+  selectTasksState,
+  (tasks) => tasks.tasks
+);
+
+export const selectIsLoading = createSelector(
+  selectTasksState,
+  (tasks) => tasks.isLoading
+);
