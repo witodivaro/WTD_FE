@@ -1,12 +1,15 @@
 import { Button, makeStyles } from "@material-ui/core";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
-import { setIsAddingNewTask } from "../redux/tasks/actions";
+import { setFilter, setIsAddingNewTask } from "../redux/tasks/actions";
 
 import CONSTS from "../const";
 
-const { ROUTES, COLORS } = CONSTS;
+import { Filters } from "../types/Task";
+import { selectFilter, selectIsAddingNewTask } from "../redux/tasks/selectors";
+import { Link } from "react-router-dom";
+
+const { COLORS, ROUTES } = CONSTS;
 
 const useStyles = makeStyles({
   header: {
@@ -31,6 +34,7 @@ const useStyles = makeStyles({
     lineHeight: 1,
     textDecoration: "none",
     color: "white",
+    width: "auto",
 
     "&::after, &::before": {
       content: '""',
@@ -45,6 +49,11 @@ const useStyles = makeStyles({
 
     "&:hover::after": {
       animation: `$slide 0.2s ease`,
+    },
+
+    "&.Mui-disabled": {
+      color: "white",
+      animation: "$fade 0.1s ease forwards",
     },
 
     "&:hover::before": {
@@ -67,25 +76,67 @@ const useStyles = makeStyles({
       opacity: 0.8,
     },
   },
+  "@keyframes fade": {
+    "0%": {
+      opacity: 1,
+    },
+    "100%": {
+      opacity: 0.5,
+    },
+  },
 });
 
 const Header = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
+  const currentFilter = useSelector(selectFilter);
+  const isAddingNewTask = useSelector(selectIsAddingNewTask);
+
+  const createChangeFilterHandler = (filter: Filters) => () => {
+    dispatch(setFilter(filter));
+    dispatch(setIsAddingNewTask(false));
+  };
+
   const addNewTask = () => {
+    dispatch(setFilter(Filters.ALL));
     dispatch(setIsAddingNewTask(true));
   };
 
   return (
     <div className={classes.header}>
       <div className={classes.wrapper}>
-        <Button className={classes.link} onClick={addNewTask}>
-          + Add new task
-        </Button>
         <Link className={classes.link} to={ROUTES.TASKS_LIST}>
           Tasks
         </Link>
+        <Button
+          disabled={isAddingNewTask}
+          className={classes.link}
+          onClick={addNewTask}
+        >
+          + Add new task
+        </Button>
+        <Button
+          disabled={currentFilter === Filters.ALL}
+          className={classes.link}
+          onClick={createChangeFilterHandler(Filters.ALL)}
+        >
+          All
+        </Button>
+        <Button
+          disabled={currentFilter === Filters.EXPIRED}
+          className={classes.link}
+          onClick={createChangeFilterHandler(Filters.EXPIRED)}
+        >
+          Expired
+        </Button>
+        <Button
+          disabled={currentFilter === Filters.ARCHIVED}
+          className={classes.link}
+          onClick={createChangeFilterHandler(Filters.ARCHIVED)}
+        >
+          Archived
+        </Button>
       </div>
     </div>
   );

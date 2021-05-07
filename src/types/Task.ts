@@ -1,9 +1,16 @@
 interface Task {
   id: number;
   type: string;
-  date: Date;
+  dueDate: Date;
   color: string;
   text: string;
+  isArchived: boolean;
+}
+
+export enum Filters {
+  ALL = "all",
+  EXPIRED = "expired",
+  ARCHIVED = "archived",
 }
 
 export default Task;

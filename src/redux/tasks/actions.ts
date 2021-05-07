@@ -3,7 +3,7 @@ import {
   deleteTaskRequestAction,
   updateTaskRequestAction,
 } from "../../types/redux/tasks";
-import Task from "../../types/Task";
+import Task, { Filters } from "../../types/Task";
 
 const prefix = "@@tasks";
 
@@ -11,6 +11,8 @@ export const ActionTypes = {
   SET_EDITING_TASK: `${prefix}/SET_EDITING_TASK`,
 
   SET_IS_ADDING_NEW_TASK: `${prefix}/SET_IS_ADDING_NEW_TASK`,
+
+  SET_FILTER: `${prefix}/SET_FILTER`,
 
   FETCH_TASKS_REQUEST: `${prefix}/FETCH_TASKS_REQUEST`,
   FETCH_TASKS_FAILURE: `${prefix}/FETCH_TASKS_FAILURE`,
@@ -43,6 +45,13 @@ export const setIsAddingNewTask = (isAddingNewTask: boolean) => ({
   type: ActionTypes.SET_IS_ADDING_NEW_TASK,
   payload: {
     isAddingNewTask,
+  },
+});
+
+export const setFilter = (filter: Filters) => ({
+  type: ActionTypes.SET_FILTER,
+  payload: {
+    filter,
   },
 });
 

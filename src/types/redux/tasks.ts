@@ -1,4 +1,4 @@
-import Task from "../Task";
+import Task, { Filters } from "../Task";
 
 export interface TasksState {
   readonly tasks: Task[];
@@ -6,6 +6,7 @@ export interface TasksState {
   readonly isAddingNewTask: boolean;
   readonly isLoading: boolean;
   readonly errors: object | null;
+  readonly filter: Filters;
 }
 
 export interface createTaskRequestAction {

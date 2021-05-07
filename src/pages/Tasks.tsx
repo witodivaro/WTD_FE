@@ -8,9 +8,9 @@ import EditTask from "../components/EditTask";
 
 import {
   selectEditingTask,
+  selectFilteredTasks,
   selectIsAddingNewTask,
   selectIsLoading,
-  selectTasks,
 } from "../redux/tasks/selectors";
 import {
   deleteTaskRequest,
@@ -37,7 +37,7 @@ const TasksPage = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  const tasks = useSelector(selectTasks);
+  const tasks = useSelector(selectFilteredTasks);
   const editingTask = useSelector(selectEditingTask);
   const isAddingNewTask = useSelector(selectIsAddingNewTask);
   const isLoading = useSelector(selectIsLoading);

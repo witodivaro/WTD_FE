@@ -1,5 +1,6 @@
 import { SimpleAction } from "../../types/redux";
 import { TasksState } from "../../types/redux/tasks";
+import { Filters } from "../../types/Task";
 import { ActionTypes } from "./actions";
 
 const initialState: TasksState = {
@@ -8,6 +9,7 @@ const initialState: TasksState = {
   isAddingNewTask: false,
   errors: null,
   isLoading: false,
+  filter: Filters.ALL,
 };
 
 export const tasksReducer = (
@@ -25,6 +27,12 @@ export const tasksReducer = (
       return {
         ...state,
         isAddingNewTask: payload.isAddingNewTask,
+      };
+
+    case ActionTypes.SET_FILTER:
+      return {
+        ...state,
+        filter: payload.filter,
       };
 
     case ActionTypes.UPDATE_TASK_SUCCESS:

@@ -46,7 +46,7 @@ const useStyles = makeStyles({
       display: "none",
     },
   },
-  date: {
+  dueDate: {
     marginTop: "10px",
     fontSize: "12px",
   },
@@ -64,7 +64,7 @@ const useStyles = makeStyles({
     animation: "$shrink 0.1s ease",
     animationFillMode: "forwards",
   },
-  datePicker: {
+  DatePicker: {
     width: "80px",
   },
   deleteButton: {
@@ -112,12 +112,12 @@ interface Props {
 const EditTask = ({ task, onSave, onCancel, onDelete, shrink }: Props) => {
   const classes = useStyles();
 
-  const { text, type, date, color } = task || {};
+  const { text, type, dueDate, color } = task || {};
 
   const initialValues = {
     text: text || "",
     type: type || "",
-    date: date || new Date(),
+    dueDate: dueDate || new Date(),
     color: color || "",
   };
 
@@ -176,9 +176,9 @@ const EditTask = ({ task, onSave, onCancel, onDelete, shrink }: Props) => {
       </CardContent>
       <Box className={classes.footer} flexShrink={0}>
         <DatePicker
-          className={classes.datePicker}
-          selected={values.date}
-          onChange={(date) => setFieldValue("date", date)}
+          className={classes.DatePicker}
+          selected={new Date(values.dueDate)}
+          onChange={(dueDate) => setFieldValue("dueDate", dueDate)}
           showTimeSelect
         />
         <InputColor
