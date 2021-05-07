@@ -5,6 +5,7 @@ import {
   Button,
   Box,
   TextField,
+  fade,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { useFormik } from "formik";
@@ -63,6 +64,33 @@ const useStyles = makeStyles({
     animation: "$shrink 0.1s ease",
     animationFillMode: "forwards",
   },
+  datePicker: {
+    width: "80px",
+  },
+  deleteButton: {
+    padding: "2px 5px",
+    backgroundColor: fade(COLORS.RED, 0.8),
+    color: "white",
+    fontSize: "12px",
+    border: "1px solid transparent",
+    "&:hover": {
+      color: fade(COLORS.RED, 0.6),
+      backgroundColor: "white",
+      borderColor: fade(COLORS.RED, 0.6),
+    },
+  },
+  saveButton: {
+    padding: "2px 5px",
+    backgroundColor: COLORS.LIGHT_BLUE,
+    color: "white",
+    fontSize: "16x",
+    border: "1px solid transparent",
+    "&:hover": {
+      color: COLORS.LIGHT_BLUE,
+      backgroundColor: "white",
+      borderColor: fade(COLORS.LIGHT_BLUE, 0.6),
+    },
+  },
   "@keyframes shrink": {
     "0%": {
       height: "500px",
@@ -77,10 +105,11 @@ interface Props {
   task?: Partial<Task>;
   onSave: (task: Partial<Task>) => void;
   onCancel: () => void;
-  showSpinner?: boolean;
+  onDelete: () => void;
+  shrink?: boolean;
 }
 
-const EditTask = ({ task, onSave, onCancel, showSpinner }: Props) => {
+const EditTask = ({ task, onSave, onCancel, onDelete, shrink }: Props) => {
   const classes = useStyles();
 
   const { text, type, date, color } = task || {};
@@ -107,10 +136,10 @@ const EditTask = ({ task, onSave, onCancel, showSpinner }: Props) => {
 
   return (
     <Card
-      className={`${classes.card} ${showSpinner ? classes.shrink : ""}`}
+      className={`${classes.card} ${shrink ? classes.shrink : ""}`}
       style={{
         zIndex: 1,
-        height: showSpinner ? "unset" : "500px",
+        height: shrink ? "unset" : "500px",
         borderColor: values.color,
       }}
     >
@@ -126,10 +155,10 @@ const EditTask = ({ task, onSave, onCancel, showSpinner }: Props) => {
           />
         </Box>
         <Box width="50%" display="flex" justifyContent="flex-end">
-          <>
-            <Button onClick={cancelEdit}>Cancel</Button>
-            <Button onClick={saveEdit}>Save</Button>
-          </>
+          <Button onClick={cancelEdit}>Cancel</Button>
+          <Button className={classes.saveButton} onClick={saveEdit}>
+            Save
+          </Button>
         </Box>
       </CardActions>
       <CardContent className={classes.content}>
@@ -147,6 +176,7 @@ const EditTask = ({ task, onSave, onCancel, showSpinner }: Props) => {
       </CardContent>
       <Box className={classes.footer} flexShrink={0}>
         <DatePicker
+          className={classes.datePicker}
           selected={values.date}
           onChange={(date) => setFieldValue("date", date)}
           showTimeSelect
@@ -158,6 +188,9 @@ const EditTask = ({ task, onSave, onCancel, showSpinner }: Props) => {
             setFieldValue("color", hex);
           }}
         />
+        <Button onClick={onDelete} className={classes.deleteButton}>
+          Delete
+        </Button>
       </Box>
     </Card>
   );

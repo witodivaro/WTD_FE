@@ -54,7 +54,20 @@ export const tasksReducer = (
         tasks: payload.tasks,
       };
 
+    case ActionTypes.DELETE_TASK_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case ActionTypes.DELETE_TASK_LOCAL:
+      return {
+        ...state,
+        tasks: state.tasks.filter((task) => task.id !== payload.id),
+      };
+
     case ActionTypes.UPDATE_TASK_FAILURE:
+    case ActionTypes.DELETE_TASK_FAILURE:
     case ActionTypes.CREATE_TASK_FAILURE:
     case ActionTypes.FETCH_TASKS_FAILURE:
       return {

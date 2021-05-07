@@ -1,23 +1,25 @@
 import { makeStyles } from "@material-ui/styles";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Task from "../components/Task";
+import NewTask from "../components/NewTask";
+import EditTask from "../components/EditTask";
 
 import {
   selectEditingTask,
   selectIsAddingNewTask,
+  selectIsLoading,
   selectTasks,
 } from "../redux/tasks/selectors";
 import {
+  deleteTaskRequest,
   fetchTasksRequest,
   setEditingTask as setEditingTaskAction,
   updateTaskRequest,
 } from "../redux/tasks/actions";
 
 import { default as TaskType } from "../types/Task";
-import NewTask from "../components/NewTask";
-import EditTask from "../components/EditTask";
 
 const useStyles = makeStyles({
   container: {
@@ -38,18 +40,40 @@ const TasksPage = () => {
   const tasks = useSelector(selectTasks);
   const editingTask = useSelector(selectEditingTask);
   const isAddingNewTask = useSelector(selectIsAddingNewTask);
+  const isLoading = useSelector(selectIsLoading);
+  const [isLoadInitiator, setIsLoadInitiator] = useState(false);
 
   useEffect(() => {
     dispatch(fetchTasksRequest());
   }, [dispatch]);
 
-  const updateTask = (id: number, task: Partial<TaskType>) => {
-    dispatch(updateTaskRequest(id, task));
-  };
+  const updateTask = useCallback(
+    (id: number, task: Partial<TaskType>) => {
+      dispatch(updateTaskRequest(id, task));
+      setIsLoadInitiator(true);
+    },
+    [dispatch]
+  );
+
+  const deleteTask = useCallback(
+    (id: number) => {
+      dispatch(deleteTaskRequest(id));
+      setIsLoadInitiator(true);
+    },
+    [dispatch]
+  );
 
   const resetEditingTask = useCallback(() => {
     dispatch(setEditingTaskAction(null));
+    setIsLoadInitiator(true);
   }, [dispatch]);
+
+  useEffect(() => {
+    if (isLoadInitiator && !isLoading) {
+      setIsLoadInitiator(false);
+      resetEditingTask();
+    }
+  }, [isLoading, setIsLoadInitiator, isLoadInitiator, resetEditingTask]);
 
   const renderedTasks = useMemo(
     () =>
@@ -60,6 +84,7 @@ const TasksPage = () => {
 
         if (editingTask === task.id) {
           const updateCurrentTask = updateTask.bind(null, task.id);
+          const deleteCurrentTask = deleteTask.bind(null, task.id);
 
           return (
             <EditTask
@@ -67,6 +92,8 @@ const TasksPage = () => {
               task={task}
               onCancel={resetEditingTask}
               onSave={updateCurrentTask}
+              onDelete={deleteCurrentTask}
+              shrink={isLoading}
             />
           );
         }
@@ -79,7 +106,15 @@ const TasksPage = () => {
           />
         );
       }),
-    [editingTask, dispatch, resetEditingTask, tasks]
+    [
+      editingTask,
+      updateTask,
+      dispatch,
+      resetEditingTask,
+      tasks,
+      isLoading,
+      deleteTask,
+    ]
   );
 
   const renderedNewTask = isAddingNewTask ? <NewTask /> : null;

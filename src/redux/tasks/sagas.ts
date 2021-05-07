@@ -1,10 +1,13 @@
 import axios from "../../utils/axios";
-import { all, call, put, takeLatest } from "redux-saga/effects";
+import { all, call, put, takeEvery, takeLatest } from "redux-saga/effects";
 
 import {
   ActionTypes,
   createTaskFailure,
   createTaskSuccess,
+  deleteTaskFailure,
+  deleteTaskLocal,
+  deleteTaskSuccess,
   fetchTasksFailure,
   fetchTasksSuccess,
   request,
@@ -15,6 +18,7 @@ import {
 import {
   createTaskRequestAction,
   updateTaskRequestAction,
+  deleteTaskRequestAction,
 } from "../../types/redux/tasks";
 
 function* fetchTasks() {
@@ -57,6 +61,21 @@ function* updateTask({ payload }: updateTaskRequestAction) {
   }
 }
 
+function* deleteTask({ payload }: deleteTaskRequestAction) {
+  const { id } = payload;
+
+  try {
+    yield put(request());
+
+    yield call(axios.delete, `/tasks/${id}`);
+
+    yield put(deleteTaskLocal(id));
+    yield put(deleteTaskSuccess());
+  } catch (error) {
+    yield put(deleteTaskFailure(error));
+  }
+}
+
 function* watchFetchTasksRequest() {
   yield takeLatest(ActionTypes.FETCH_TASKS_REQUEST, fetchTasks);
 }
@@ -69,10 +88,15 @@ function* watchUpdateTaskRequest() {
   yield takeLatest(ActionTypes.UPDATE_TASK_REQUEST, updateTask);
 }
 
+function* watchDeleteTaskRequest() {
+  yield takeEvery(ActionTypes.DELETE_TASK_REQUEST, deleteTask);
+}
+
 export function* tasksSagas() {
   yield all([
     watchFetchTasksRequest(),
     watchCreateTaskRequest(),
     watchUpdateTaskRequest(),
+    watchDeleteTaskRequest(),
   ]);
 }

@@ -1,4 +1,8 @@
-import { updateTaskRequestAction } from "../../types/redux/tasks";
+import {
+  createTaskRequestAction,
+  deleteTaskRequestAction,
+  updateTaskRequestAction,
+} from "../../types/redux/tasks";
 import Task from "../../types/Task";
 
 const prefix = "@@tasks";
@@ -19,6 +23,11 @@ export const ActionTypes = {
   UPDATE_TASK_REQUEST: `${prefix}/UPDATE_TASK_REQUEST`,
   UPDATE_TASK_FAILURE: `${prefix}/UPDATE_TASK_FAILURE`,
   UPDATE_TASK_SUCCESS: `${prefix}/UPDATE_TASK_SUCCESS`,
+
+  DELETE_TASK_REQUEST: `${prefix}/DELETE_TASK_REQUEST`,
+  DELETE_TASK_FAILURE: `${prefix}/DELETE_TASK_FAILURE`,
+  DELETE_TASK_SUCCESS: `${prefix}/DELETE_TASK_SUCCESS`,
+  DELETE_TASK_LOCAL: `${prefix}/DELETE_TASK_LOCAL`,
 
   REQUEST: `${prefix}/REQUEST`,
 };
@@ -51,7 +60,9 @@ export const fetchTasksFailure = (errors: any) => ({
   payload: { errors },
 });
 
-export const createTaskRequest = (task: Partial<Task>) => ({
+export const createTaskRequest = (
+  task: Partial<Task>
+): createTaskRequestAction => ({
   type: ActionTypes.CREATE_TASK_REQUEST,
   payload: { task },
 });
@@ -63,6 +74,25 @@ export const createTaskSuccess = (createdTask: Partial<Task>) => ({
 
 export const createTaskFailure = (errors: any) => ({
   type: ActionTypes.CREATE_TASK_FAILURE,
+  payload: { errors },
+});
+
+export const deleteTaskLocal = (id: number) => ({
+  type: ActionTypes.DELETE_TASK_LOCAL,
+  payload: { id },
+});
+
+export const deleteTaskRequest = (id: number): deleteTaskRequestAction => ({
+  type: ActionTypes.DELETE_TASK_REQUEST,
+  payload: { id },
+});
+
+export const deleteTaskSuccess = () => ({
+  type: ActionTypes.DELETE_TASK_SUCCESS,
+});
+
+export const deleteTaskFailure = (errors: any) => ({
+  type: ActionTypes.DELETE_TASK_FAILURE,
   payload: { errors },
 });
 

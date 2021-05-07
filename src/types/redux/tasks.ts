@@ -11,7 +11,7 @@ export interface TasksState {
 export interface createTaskRequestAction {
   type: string;
   payload: {
-    task: Task;
+    task: Partial<Task>;
   };
 }
 
@@ -19,6 +19,13 @@ export interface updateTaskRequestAction {
   type: string;
   payload: {
     task: Partial<Task>;
+    id: number;
+  };
+}
+
+export interface deleteTaskRequestAction {
+  type: string;
+  payload: {
     id: number;
   };
 }

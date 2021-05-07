@@ -23,7 +23,7 @@ const NewTask = () => {
     }
   }, [dispatch, isSaving, isLoading]);
 
-  const handleCancel = () => {
+  const cancelAddingNewTask = () => {
     dispatch(setIsAddingNewTask(false));
   };
 
@@ -34,9 +34,10 @@ const NewTask = () => {
 
   return (
     <EditTask
-      onCancel={handleCancel}
+      onDelete={cancelAddingNewTask}
+      onCancel={cancelAddingNewTask}
       onSave={handleSave}
-      showSpinner={isSaving}
+      shrink={isSaving}
     />
   );
 };
