@@ -6,19 +6,21 @@ import {
   createTaskFailure,
   createTaskSuccess,
   deleteTaskFailure,
-  deleteTaskLocal,
   deleteTaskSuccess,
   fetchTasksFailure,
   fetchTasksSuccess,
   request,
   updateTaskFailure,
   updateTaskSuccess,
+  changeTaskArchivedFailure,
+  changeTaskArchivedSuccess,
 } from "./actions";
 
 import {
   createTaskRequestAction,
   updateTaskRequestAction,
   deleteTaskRequestAction,
+  changeTaskArchivedAction,
 } from "../../types/redux/tasks";
 
 function* fetchTasks() {
@@ -69,10 +71,32 @@ function* deleteTask({ payload }: deleteTaskRequestAction) {
 
     yield call(axios.delete, `/tasks/${id}`);
 
-    yield put(deleteTaskLocal(id));
-    yield put(deleteTaskSuccess());
+    yield put(deleteTaskSuccess(id));
   } catch (error) {
     yield put(deleteTaskFailure(error));
+  }
+}
+
+function* changeTaskArchived({ payload }: changeTaskArchivedAction) {
+  const { id, isArchived } = payload;
+
+  const axiosBody = {
+    id,
+    isArchived,
+  };
+
+  try {
+    yield put(request());
+
+    const { data } = yield call(
+      axios.patch,
+      `/tasks/archived/${id}`,
+      axiosBody
+    );
+
+    yield put(changeTaskArchivedSuccess(data));
+  } catch (error) {
+    yield put(changeTaskArchivedFailure(error));
   }
 }
 
@@ -88,6 +112,13 @@ function* watchUpdateTaskRequest() {
   yield takeLatest(ActionTypes.UPDATE_TASK_REQUEST, updateTask);
 }
 
+function* watchChangeTaskArchivedRequest() {
+  yield takeLatest(
+    ActionTypes.CHANGE_TASK_ARCHIVED_REQUEST,
+    changeTaskArchived
+  );
+}
+
 function* watchDeleteTaskRequest() {
   yield takeEvery(ActionTypes.DELETE_TASK_REQUEST, deleteTask);
 }
@@ -98,5 +129,6 @@ export function* tasksSagas() {
     watchCreateTaskRequest(),
     watchUpdateTaskRequest(),
     watchDeleteTaskRequest(),
+    watchChangeTaskArchivedRequest(),
   ]);
 }

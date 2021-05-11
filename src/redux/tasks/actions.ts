@@ -1,4 +1,5 @@
 import {
+  changeTaskArchivedAction,
   createTaskRequestAction,
   deleteTaskRequestAction,
   updateTaskRequestAction,
@@ -30,6 +31,10 @@ export const ActionTypes = {
   DELETE_TASK_FAILURE: `${prefix}/DELETE_TASK_FAILURE`,
   DELETE_TASK_SUCCESS: `${prefix}/DELETE_TASK_SUCCESS`,
   DELETE_TASK_LOCAL: `${prefix}/DELETE_TASK_LOCAL`,
+
+  CHANGE_TASK_ARCHIVED_REQUEST: `${prefix}/CHANGE_TASK_ARCHIVED_REQUEST`,
+  CHANGE_TASK_ARCHIVED_SUCCESS: `${prefix}/CHANGE_TASK_ARCHIVED_SUCCESS`,
+  CHANGE_TASK_ARCHIVED_FAILURE: `${prefix}/CHANGE_TASK_ARCHIVED_FAILURE`,
 
   REQUEST: `${prefix}/REQUEST`,
 };
@@ -96,8 +101,9 @@ export const deleteTaskRequest = (id: number): deleteTaskRequestAction => ({
   payload: { id },
 });
 
-export const deleteTaskSuccess = () => ({
+export const deleteTaskSuccess = (id: number) => ({
   type: ActionTypes.DELETE_TASK_SUCCESS,
+  payload: { id },
 });
 
 export const deleteTaskFailure = (errors: any) => ({
@@ -120,6 +126,24 @@ export const updateTaskSuccess = (updatedTask: Partial<Task>) => ({
 
 export const updateTaskFailure = (errors: any) => ({
   type: ActionTypes.UPDATE_TASK_FAILURE,
+  payload: { errors },
+});
+
+export const changeTaskArchivedRequest = (
+  id: number,
+  isArchived: boolean
+): changeTaskArchivedAction => ({
+  type: ActionTypes.CHANGE_TASK_ARCHIVED_REQUEST,
+  payload: { id, isArchived },
+});
+
+export const changeTaskArchivedSuccess = (updatedTask: Partial<Task>) => ({
+  type: ActionTypes.CHANGE_TASK_ARCHIVED_SUCCESS,
+  payload: { updatedTask },
+});
+
+export const changeTaskArchivedFailure = (errors: any) => ({
+  type: ActionTypes.CHANGE_TASK_ARCHIVED_FAILURE,
   payload: { errors },
 });
 

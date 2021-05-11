@@ -65,7 +65,8 @@ const useStyles = makeStyles({
     animationFillMode: "forwards",
   },
   DatePicker: {
-    width: "80px",
+    width: "90px",
+    textAlign: "center",
   },
   deleteButton: {
     padding: "2px 5px",

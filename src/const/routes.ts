@@ -1,5 +1,5 @@
 const Routes = {
-  TASKS_LIST: "/tasks",
+  TASKS_LIST: "/",
 };
 
 export default Routes;

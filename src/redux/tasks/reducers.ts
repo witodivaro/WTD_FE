@@ -66,12 +66,20 @@ export const tasksReducer = (
       return {
         ...state,
         isLoading: false,
+        tasks: state.tasks.filter((task) => task.id !== payload.id),
       };
 
-    case ActionTypes.DELETE_TASK_LOCAL:
+    case ActionTypes.CHANGE_TASK_ARCHIVED_SUCCESS:
+      const {
+        updatedTask: { id, isArchived },
+      } = payload;
+
       return {
         ...state,
-        tasks: state.tasks.filter((task) => task.id !== payload.id),
+        isLoading: false,
+        tasks: state.tasks.map((task) =>
+          task.id !== id ? task : { ...task, isArchived }
+        ),
       };
 
     case ActionTypes.UPDATE_TASK_FAILURE:

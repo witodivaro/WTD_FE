@@ -30,3 +30,11 @@ export interface deleteTaskRequestAction {
     id: number;
   };
 }
+
+export interface changeTaskArchivedAction {
+  type: string;
+  payload: {
+    id: number;
+    isArchived: boolean;
+  };
+}

@@ -8,10 +8,16 @@ import {
   fade,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import { useDispatch } from "react-redux";
 
 import TaskType from "../types/Task";
 
 import CONSTS from "../const";
+import { useCallback } from "react";
+import {
+  changeTaskArchivedRequest,
+  updateTaskRequest,
+} from "../redux/tasks/actions";
 
 const { COLORS } = CONSTS;
 
@@ -89,10 +95,15 @@ interface Props {
 
 const Task = ({ task, switchToEditMode }: Props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
-  const { color, dueDate, text, type } = task;
+  const { id, color, dueDate, text, type, isArchived } = task;
 
   const isExpired = new Date(dueDate).getTime() < Date.now();
+
+  const toggleArchived = useCallback(() => {
+    dispatch(changeTaskArchivedRequest(id, !isArchived));
+  }, [id, dispatch, isArchived]);
 
   return (
     <Card
@@ -137,7 +148,9 @@ const Task = ({ task, switchToEditMode }: Props) => {
         )}
       </Box>
       <Box className={classes.archiveContainer}>
-        <Button className={classes.archiveButton}>Archive</Button>
+        <Button onClick={toggleArchived} className={classes.archiveButton}>
+          {isArchived ? "Unarchive" : "Archive"}
+        </Button>
       </Box>
     </Card>
   );
