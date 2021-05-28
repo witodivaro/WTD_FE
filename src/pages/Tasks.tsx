@@ -19,7 +19,7 @@ import {
   updateTaskRequest,
 } from "../redux/tasks/actions";
 
-import { default as TaskType } from "../types/Task";
+import { Task as TaskType } from "../redux/tasks/types";
 
 const useStyles = makeStyles({
   container: {

@@ -10,7 +10,7 @@ import {
 import { makeStyles } from "@material-ui/styles";
 import { useDispatch } from "react-redux";
 
-import TaskType from "../types/Task";
+import { Task as TaskType } from "../redux/tasks/types";
 
 import CONSTS from "../const";
 import { useCallback } from "react";

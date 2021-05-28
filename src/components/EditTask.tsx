@@ -16,7 +16,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import CONSTS from "../const";
 
-import Task from "../types/Task";
+import { Task } from "../redux/tasks/types";
 
 const { COLORS } = CONSTS;
 

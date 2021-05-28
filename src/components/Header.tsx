@@ -5,7 +5,7 @@ import { setFilter, setIsAddingNewTask } from "../redux/tasks/actions";
 
 import CONSTS from "../const";
 
-import { Filters } from "../types/Task";
+import { Filters } from "../redux/tasks/types";
 import { selectFilter, selectIsAddingNewTask } from "../redux/tasks/selectors";
 import { Link } from "react-router-dom";
 
