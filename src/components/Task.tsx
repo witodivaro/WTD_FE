@@ -14,10 +14,7 @@ import TaskType from "../types/Task";
 
 import CONSTS from "../const";
 import { useCallback } from "react";
-import {
-  changeTaskArchivedRequest,
-  updateTaskRequest,
-} from "../redux/tasks/actions";
+import { changeTaskArchivedRequest } from "../redux/tasks/actions";
 
 const { COLORS } = CONSTS;
 

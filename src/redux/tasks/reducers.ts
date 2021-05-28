@@ -1,7 +1,7 @@
 import { SimpleAction } from "../../types/redux";
-import { TasksState } from "../../types/redux/tasks";
-import { Filters } from "../../types/Task";
-import { ActionTypes } from "./actions";
+import { TasksState } from "./types";
+import { Filters } from "./types";
+import { ActionTypes } from "./types";
 
 const initialState: TasksState = {
   tasks: [],

@@ -2,7 +2,6 @@ import axios from "../../utils/axios";
 import { all, call, put, takeEvery, takeLatest } from "redux-saga/effects";
 
 import {
-  ActionTypes,
   createTaskFailure,
   createTaskSuccess,
   deleteTaskFailure,
@@ -17,11 +16,12 @@ import {
 } from "./actions";
 
 import {
-  createTaskRequestAction,
-  updateTaskRequestAction,
-  deleteTaskRequestAction,
-  changeTaskArchivedAction,
-} from "../../types/redux/tasks";
+  ActionTypes,
+  IChangeTaskArchived,
+  ICreateTaskRequest,
+  IDeleteTaskRequest,
+  IUpdateTaskRequest,
+} from "./types";
 
 function* fetchTasks() {
   try {
@@ -35,7 +35,7 @@ function* fetchTasks() {
   }
 }
 
-function* createTask({ payload }: createTaskRequestAction) {
+function* createTask({ payload }: ICreateTaskRequest) {
   const { task } = payload;
 
   try {
@@ -49,7 +49,7 @@ function* createTask({ payload }: createTaskRequestAction) {
   }
 }
 
-function* updateTask({ payload }: updateTaskRequestAction) {
+function* updateTask({ payload }: IUpdateTaskRequest) {
   const { id, task } = payload;
 
   try {
@@ -63,7 +63,7 @@ function* updateTask({ payload }: updateTaskRequestAction) {
   }
 }
 
-function* deleteTask({ payload }: deleteTaskRequestAction) {
+function* deleteTask({ payload }: IDeleteTaskRequest) {
   const { id } = payload;
 
   try {
@@ -77,7 +77,7 @@ function* deleteTask({ payload }: deleteTaskRequestAction) {
   }
 }
 
-function* changeTaskArchived({ payload }: changeTaskArchivedAction) {
+function* changeTaskArchived({ payload }: IChangeTaskArchived) {
   const { id, isArchived } = payload;
 
   const axiosBody = {

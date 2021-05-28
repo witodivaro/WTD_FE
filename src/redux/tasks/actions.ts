@@ -1,43 +1,11 @@
 import {
-  changeTaskArchivedAction,
-  createTaskRequestAction,
-  deleteTaskRequestAction,
-  updateTaskRequestAction,
-} from "../../types/redux/tasks";
-import Task, { Filters } from "../../types/Task";
-
-const prefix = "@@tasks";
-
-export const ActionTypes = {
-  SET_EDITING_TASK: `${prefix}/SET_EDITING_TASK`,
-
-  SET_IS_ADDING_NEW_TASK: `${prefix}/SET_IS_ADDING_NEW_TASK`,
-
-  SET_FILTER: `${prefix}/SET_FILTER`,
-
-  FETCH_TASKS_REQUEST: `${prefix}/FETCH_TASKS_REQUEST`,
-  FETCH_TASKS_FAILURE: `${prefix}/FETCH_TASKS_FAILURE`,
-  FETCH_TASKS_SUCCESS: `${prefix}/FETCH_TASKS_SUCCESS`,
-
-  CREATE_TASK_REQUEST: `${prefix}/CREATE_TASK_REQUEST`,
-  CREATE_TASK_FAILURE: `${prefix}/CREATE_TASK_FAILURE`,
-  CREATE_TASK_SUCCESS: `${prefix}/CREATE_TASK_SUCCESS`,
-
-  UPDATE_TASK_REQUEST: `${prefix}/UPDATE_TASK_REQUEST`,
-  UPDATE_TASK_FAILURE: `${prefix}/UPDATE_TASK_FAILURE`,
-  UPDATE_TASK_SUCCESS: `${prefix}/UPDATE_TASK_SUCCESS`,
-
-  DELETE_TASK_REQUEST: `${prefix}/DELETE_TASK_REQUEST`,
-  DELETE_TASK_FAILURE: `${prefix}/DELETE_TASK_FAILURE`,
-  DELETE_TASK_SUCCESS: `${prefix}/DELETE_TASK_SUCCESS`,
-  DELETE_TASK_LOCAL: `${prefix}/DELETE_TASK_LOCAL`,
-
-  CHANGE_TASK_ARCHIVED_REQUEST: `${prefix}/CHANGE_TASK_ARCHIVED_REQUEST`,
-  CHANGE_TASK_ARCHIVED_SUCCESS: `${prefix}/CHANGE_TASK_ARCHIVED_SUCCESS`,
-  CHANGE_TASK_ARCHIVED_FAILURE: `${prefix}/CHANGE_TASK_ARCHIVED_FAILURE`,
-
-  REQUEST: `${prefix}/REQUEST`,
-};
+  ActionTypes,
+  IChangeTaskArchived,
+  ICreateTaskRequest,
+  IDeleteTaskRequest,
+  IUpdateTaskRequest,
+} from "./types";
+import { Task, Filters } from "./types";
 
 export const setEditingTask = (taskId: number | null) => ({
   type: ActionTypes.SET_EDITING_TASK,
@@ -74,9 +42,7 @@ export const fetchTasksFailure = (errors: any) => ({
   payload: { errors },
 });
 
-export const createTaskRequest = (
-  task: Partial<Task>
-): createTaskRequestAction => ({
+export const createTaskRequest = (task: Partial<Task>): ICreateTaskRequest => ({
   type: ActionTypes.CREATE_TASK_REQUEST,
   payload: { task },
 });
@@ -96,7 +62,7 @@ export const deleteTaskLocal = (id: number) => ({
   payload: { id },
 });
 
-export const deleteTaskRequest = (id: number): deleteTaskRequestAction => ({
+export const deleteTaskRequest = (id: number): IDeleteTaskRequest => ({
   type: ActionTypes.DELETE_TASK_REQUEST,
   payload: { id },
 });
@@ -114,7 +80,7 @@ export const deleteTaskFailure = (errors: any) => ({
 export const updateTaskRequest = (
   id: number,
   task: Partial<Task>
-): updateTaskRequestAction => ({
+): IUpdateTaskRequest => ({
   type: ActionTypes.UPDATE_TASK_REQUEST,
   payload: { id, task },
 });
@@ -132,7 +98,7 @@ export const updateTaskFailure = (errors: any) => ({
 export const changeTaskArchivedRequest = (
   id: number,
   isArchived: boolean
-): changeTaskArchivedAction => ({
+): IChangeTaskArchived => ({
   type: ActionTypes.CHANGE_TASK_ARCHIVED_REQUEST,
   payload: { id, isArchived },
 });

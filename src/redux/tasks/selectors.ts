@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 
 import { State } from "../../types/redux/store";
-import { Filters } from "../../types/Task";
+import { Filters } from "./types";
 import { isExpired } from "../../utils/utils";
 
 const selectTasksState = (state: State) => state.tasks;
