@@ -55,7 +55,6 @@ function* signUp({ payload }: ISignUpRequest) {
     yield put(signUpSuccess());
     yield put(setUser(user));
   } catch (error) {
-    console.log(error);
     yield put(signUpFailure(error));
   }
 }
