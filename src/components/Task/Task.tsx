@@ -10,11 +10,11 @@ import {
 import { makeStyles } from "@material-ui/styles";
 import { useDispatch } from "react-redux";
 
-import { Task as TaskType } from "../redux/tasks/types";
+import { Task as TaskType } from "../../redux/tasks/types";
 
-import CONSTS from "../const";
+import CONSTS from "../../const";
 import { useCallback } from "react";
-import { changeTaskArchivedRequest } from "../redux/tasks/actions";
+import { changeTaskArchivedRequest } from "../../redux/tasks/actions";
 
 const { COLORS } = CONSTS;
 

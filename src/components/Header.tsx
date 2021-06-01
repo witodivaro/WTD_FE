@@ -7,9 +7,87 @@ import CONSTS from "../const";
 
 import { Filters } from "../redux/tasks/types";
 import { selectFilter, selectIsAddingNewTask } from "../redux/tasks/selectors";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 
 const { COLORS, ROUTES } = CONSTS;
+
+const Header = () => {
+  const dispatch = useDispatch();
+  const classes = useStyles();
+  const history = useHistory();
+  const location = useLocation();
+
+  const currentFilter = useSelector(selectFilter);
+  const isAddingNewTask = useSelector(selectIsAddingNewTask);
+
+  const createChangeFilterHandler = (filter: Filters) => () => {
+    dispatch(setFilter(filter));
+
+    if (isAddingNewTask) {
+      dispatch(setIsAddingNewTask(false));
+    }
+  };
+
+  const addNewTask = () => {
+    dispatch(setFilter(Filters.ALL));
+    dispatch(setIsAddingNewTask(true));
+  };
+
+  const navigateToLogin = () => {
+    history.push("/login");
+  };
+
+  const renderedFilters =
+    location.pathname === ROUTES.TASKS_LIST ? (
+      <>
+        <Button
+          disabled={isAddingNewTask}
+          className={classes.link}
+          onClick={addNewTask}
+        >
+          + Add new task
+        </Button>
+        <Button
+          disabled={currentFilter === Filters.ALL}
+          className={classes.link}
+          onClick={createChangeFilterHandler(Filters.ALL)}
+        >
+          All
+        </Button>
+        <Button
+          disabled={currentFilter === Filters.EXPIRED}
+          className={classes.link}
+          onClick={createChangeFilterHandler(Filters.EXPIRED)}
+        >
+          Expired
+        </Button>
+        <Button
+          disabled={currentFilter === Filters.ARCHIVED}
+          className={classes.link}
+          onClick={createChangeFilterHandler(Filters.ARCHIVED)}
+        >
+          Archived
+        </Button>
+      </>
+    ) : null;
+
+  return (
+    <div className={classes.header}>
+      <div className={classes.wrapper}>
+        <Link className={classes.link} to={ROUTES.TASKS_LIST}>
+          Tasks
+        </Link>
+        {renderedFilters}
+        <Button
+          className={`${classes.link} ${classes.linkRight}`}
+          onClick={navigateToLogin}
+        >
+          Login
+        </Button>
+      </div>
+    </div>
+  );
+};
 
 const useStyles = makeStyles({
   header: {
@@ -22,6 +100,8 @@ const useStyles = makeStyles({
     background: `linear-gradient(to left, ${COLORS.LIGHT_BLUE}, ${COLORS.BEIGE})`,
     borderRadius: "10px",
     border: "2px solid rgba(255, 255, 255, 0.3)",
+
+    display: "flex",
   },
   link: {
     position: "relative",
@@ -60,6 +140,9 @@ const useStyles = makeStyles({
       height: "1px",
     },
   },
+  linkRight: {
+    marginLeft: "auto",
+  },
   "@keyframes slide": {
     "0%": {
       top: 0,
@@ -85,61 +168,5 @@ const useStyles = makeStyles({
     },
   },
 });
-
-const Header = () => {
-  const dispatch = useDispatch();
-  const classes = useStyles();
-
-  const currentFilter = useSelector(selectFilter);
-  const isAddingNewTask = useSelector(selectIsAddingNewTask);
-
-  const createChangeFilterHandler = (filter: Filters) => () => {
-    dispatch(setFilter(filter));
-    dispatch(setIsAddingNewTask(false));
-  };
-
-  const addNewTask = () => {
-    dispatch(setFilter(Filters.ALL));
-    dispatch(setIsAddingNewTask(true));
-  };
-
-  return (
-    <div className={classes.header}>
-      <div className={classes.wrapper}>
-        <Link className={classes.link} to={ROUTES.TASKS_LIST}>
-          Tasks
-        </Link>
-        <Button
-          disabled={isAddingNewTask}
-          className={classes.link}
-          onClick={addNewTask}
-        >
-          + Add new task
-        </Button>
-        <Button
-          disabled={currentFilter === Filters.ALL}
-          className={classes.link}
-          onClick={createChangeFilterHandler(Filters.ALL)}
-        >
-          All
-        </Button>
-        <Button
-          disabled={currentFilter === Filters.EXPIRED}
-          className={classes.link}
-          onClick={createChangeFilterHandler(Filters.EXPIRED)}
-        >
-          Expired
-        </Button>
-        <Button
-          disabled={currentFilter === Filters.ARCHIVED}
-          className={classes.link}
-          onClick={createChangeFilterHandler(Filters.ARCHIVED)}
-        >
-          Archived
-        </Button>
-      </div>
-    </div>
-  );
-};
 
 export default Header;

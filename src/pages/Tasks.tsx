@@ -2,9 +2,9 @@ import { makeStyles } from "@material-ui/styles";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import Task from "../components/Task";
-import NewTask from "../components/NewTask";
-import EditTask from "../components/EditTask";
+import Task from "../components/Task/Task";
+import NewTask from "../components/Task/NewTask";
+import EditTask from "../components/Task/EditTask";
 
 import {
   selectEditingTask,

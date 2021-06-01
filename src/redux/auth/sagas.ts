@@ -21,10 +21,13 @@ function* login({ payload }: ILoginRequest) {
 }
 
 function* signUp({ payload }: ISignUpRequest) {
+  console.log(1);
   const { email, password, username } = payload;
 
   try {
     const { data } = yield call(axios.post, "/");
+
+    console.log(data);
 
     yield put(signUpSuccess(""));
   } catch (error) {
