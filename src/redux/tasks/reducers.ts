@@ -1,4 +1,5 @@
 import { SimpleAction } from "../../types/redux";
+import { RESET_STORE } from "../auth/types";
 import { TasksState } from "./types";
 import { Filters } from "./types";
 import { ActionTypes } from "./types";
@@ -97,6 +98,9 @@ export const tasksReducer = (
         ...state,
         isLoading: true,
       };
+
+    case RESET_STORE:
+      return initialState;
 
     default:
       return state;

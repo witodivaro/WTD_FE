@@ -21,9 +21,8 @@ export const loginRequest = ({
   payload: { username, password },
 });
 
-export const loginSuccess = (user: string): ILoginSuccess => ({
+export const loginSuccess = (): ILoginSuccess => ({
   type: ActionTypes.LOGIN_SUCCESS,
-  payload: { user },
 });
 
 export const loginFailure = (errors: any): ILoginFailure => ({
@@ -44,9 +43,8 @@ export const signUpRequest = ({
   payload: { email, username, password },
 });
 
-export const signUpSuccess = (user: string): ISignUpSuccess => ({
+export const signUpSuccess = (): ISignUpSuccess => ({
   type: ActionTypes.SIGN_UP_SUCCESS,
-  payload: { user },
 });
 
 export const signUpFailure = (errors: any): ISignUpFailure => ({

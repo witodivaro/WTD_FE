@@ -13,7 +13,12 @@ export const ActionTypes = {
   LOGOUT_SUCCESS: `${prefix}/LOGOUT_SUCCESS`,
 };
 
-export interface AuthState {}
+export const RESET_STORE = "RESET_STORE";
+
+export interface AuthState {
+  isLoading: boolean;
+  isAuthenticated: boolean;
+}
 
 export interface ILoginRequest {
   type: string;
@@ -25,9 +30,6 @@ export interface ILoginRequest {
 
 export interface ILoginSuccess {
   type: string;
-  payload: {
-    user: string;
-  };
 }
 
 export interface ILoginFailure {
@@ -48,9 +50,6 @@ export interface ISignUpRequest {
 
 export interface ISignUpSuccess {
   type: string;
-  payload: {
-    user: string;
-  };
 }
 
 export interface ISignUpFailure {

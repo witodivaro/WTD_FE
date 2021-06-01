@@ -17,7 +17,7 @@ const LoginPage = () => {
     password: "",
   };
 
-  const { handleSubmit, handleChange } = useFormik({
+  const { values, handleSubmit, handleChange } = useFormik({
     initialValues,
     onSubmit: (values) => {
       dispatch(loginRequest(values));
@@ -31,7 +31,7 @@ const LoginPage = () => {
           <TextField
             className={classes.input}
             type="text"
-            name="name"
+            name="username"
             label="Name"
             onChange={handleChange}
           />

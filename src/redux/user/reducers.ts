@@ -1,3 +1,4 @@
+import { RESET_STORE } from "../auth/types";
 import { ActionTypes, UserState } from "./types";
 
 const initialState: UserState = {
@@ -14,6 +15,9 @@ export const userReducer = (
         ...state,
         user: payload.user,
       };
+
+    case RESET_STORE:
+      return initialState;
 
     default:
       return state;

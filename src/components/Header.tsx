@@ -9,6 +9,9 @@ import { Filters } from "../redux/tasks/types";
 import { selectFilter, selectIsAddingNewTask } from "../redux/tasks/selectors";
 import { Link, useHistory, useLocation } from "react-router-dom";
 
+import { selectIsAuthenticated } from "../redux/auth/selectors";
+import { logout } from "../redux/auth/actions";
+
 const { COLORS, ROUTES } = CONSTS;
 
 const Header = () => {
@@ -19,6 +22,7 @@ const Header = () => {
 
   const currentFilter = useSelector(selectFilter);
   const isAddingNewTask = useSelector(selectIsAddingNewTask);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
 
   const createChangeFilterHandler = (filter: Filters) => () => {
     dispatch(setFilter(filter));
@@ -31,6 +35,10 @@ const Header = () => {
   const addNewTask = () => {
     dispatch(setFilter(Filters.ALL));
     dispatch(setIsAddingNewTask(true));
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
   };
 
   const navigateToLogin = () => {
@@ -71,19 +79,32 @@ const Header = () => {
       </>
     ) : null;
 
+  const renderedAuthButton = isAuthenticated ? (
+    <Button
+      onClick={handleLogout}
+      className={`${classes.link} ${classes.linkRight}`}
+    >
+      Logout
+    </Button>
+  ) : (
+    <Button
+      className={`${classes.link} ${classes.linkRight}`}
+      onClick={navigateToLogin}
+    >
+      Login
+    </Button>
+  );
+
   return (
     <div className={classes.header}>
       <div className={classes.wrapper}>
-        <Link className={classes.link} to={ROUTES.TASKS_LIST}>
-          Tasks
-        </Link>
+        {isAuthenticated && (
+          <Link className={classes.link} to={ROUTES.TASKS_LIST}>
+            Tasks
+          </Link>
+        )}
         {renderedFilters}
-        <Button
-          className={`${classes.link} ${classes.linkRight}`}
-          onClick={navigateToLogin}
-        >
-          Login
-        </Button>
+        {renderedAuthButton}
       </div>
     </div>
   );

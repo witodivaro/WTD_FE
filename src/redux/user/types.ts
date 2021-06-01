@@ -7,6 +7,7 @@ export const ActionTypes = {
 export interface User {
   username: string;
   email: string;
+  role: string;
 }
 
 export interface UserState {
@@ -16,6 +17,6 @@ export interface UserState {
 export interface ISetUser {
   type: string;
   payload: {
-    user: User;
+    user: User | null;
   };
 }

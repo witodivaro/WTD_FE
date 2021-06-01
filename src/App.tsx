@@ -1,9 +1,11 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import Header from "./components/Header";
 
-import ROUTES from "./const/routes";
 import Pages from "./pages";
 import SignUpPage from "./pages/SignUp";
+import Header from "./components/Header";
+import PrivateRoute from "./components/PrivateRoute";
+
+import ROUTES from "./const/routes";
 
 const { TasksPage, LoginPage, PageNotFound } = Pages;
 
@@ -12,15 +14,31 @@ function App() {
     <BrowserRouter>
       <Header />
       <Switch>
-        <Route exact path={ROUTES.TASKS_LIST}>
+        <PrivateRoute
+          authenticated
+          redirectTo={ROUTES.LOGIN}
+          exact
+          path={ROUTES.TASKS_LIST}
+        >
           <TasksPage />
-        </Route>
-        <Route exact path={ROUTES.LOGIN}>
+        </PrivateRoute>
+
+        <PrivateRoute
+          authenticated={false}
+          redirectTo={ROUTES.TASKS_LIST}
+          exact
+          path={ROUTES.LOGIN}
+        >
           <LoginPage />
-        </Route>
-        <Route exact path={ROUTES.SIGN_UP}>
+        </PrivateRoute>
+        <PrivateRoute
+          authenticated={false}
+          redirectTo={ROUTES.TASKS_LIST}
+          exact
+          path={ROUTES.SIGN_UP}
+        >
           <SignUpPage />
-        </Route>
+        </PrivateRoute>
 
         <Route>
           <PageNotFound />

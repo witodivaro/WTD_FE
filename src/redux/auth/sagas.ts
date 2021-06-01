@@ -1,38 +1,67 @@
 import { call, put, takeLatest, all } from "@redux-saga/core/effects";
-import axios from "axios";
+
+import axios, { setAuthToken } from "../../utils/axios";
+import { setUser } from "../user/actions";
 import {
   loginFailure,
   loginSuccess,
   signUpFailure,
   signUpSuccess,
 } from "./actions";
-import { ActionTypes, ILoginRequest, ISignUpRequest } from "./types";
+import {
+  ActionTypes,
+  ILoginRequest,
+  ISignUpRequest,
+  RESET_STORE,
+} from "./types";
 
 function* login({ payload }: ILoginRequest) {
   const { username, password } = payload;
 
-  try {
-    const { data } = yield call(axios.post, "/");
+  const axiosPayload = {
+    username,
+    password,
+  };
 
-    yield put(loginSuccess(""));
+  try {
+    const { data } = yield call(axios.post, "/user/login", axiosPayload);
+
+    const { token, user } = data;
+
+    setAuthToken(token);
+    yield put(loginSuccess());
+    yield put(setUser(user));
   } catch (error) {
     yield put(loginFailure(error));
   }
 }
 
 function* signUp({ payload }: ISignUpRequest) {
-  console.log(1);
   const { email, password, username } = payload;
 
+  const axiosPayload = {
+    email,
+    password,
+    username,
+  };
+
   try {
-    const { data } = yield call(axios.post, "/");
+    const { data } = yield call(axios.post, "/user/signUp", axiosPayload);
 
-    console.log(data);
+    const { user, token } = data;
 
-    yield put(signUpSuccess(""));
+    setAuthToken(token);
+
+    yield put(signUpSuccess());
+    yield put(setUser(user));
   } catch (error) {
+    console.log(error);
     yield put(signUpFailure(error));
   }
+}
+
+function* logout() {
+  yield put({ type: RESET_STORE });
 }
 
 function* watchLoginRequest() {
@@ -43,6 +72,10 @@ function* watchSignUpRequest() {
   yield takeLatest(ActionTypes.SIGN_UP_REQUEST, signUp);
 }
 
+function* watchLogout() {
+  yield takeLatest(ActionTypes.LOGOUT, logout);
+}
+
 export function* authSagas() {
-  yield all([watchLoginRequest(), watchSignUpRequest()]);
+  yield all([watchLoginRequest(), watchSignUpRequest(), watchLogout()]);
 }
