@@ -46,7 +46,7 @@ function* signUp({ payload }: ISignUpRequest) {
   };
 
   try {
-    const { data } = yield call(axios.post, "/user/signUp", axiosPayload);
+    const { data } = yield call(axios.post, "/user/sign-up", axiosPayload);
 
     const { user, token } = data;
 
