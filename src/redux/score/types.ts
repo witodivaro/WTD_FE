@@ -18,6 +18,7 @@ export interface ScoreState {
 
 export interface TopUser {
   username: string;
+  id: number;
   tasksCount: number;
 }
 

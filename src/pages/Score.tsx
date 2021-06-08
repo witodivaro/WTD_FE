@@ -15,7 +15,7 @@ import { selectTopUsers } from "../redux/score/selectors";
 import { TopUser } from "../redux/score/types";
 
 import { COLORS } from "../const";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { fetchTopUsersRequest } from "../redux/score/actions";
 
 const ScorePage = () => {
@@ -28,6 +28,22 @@ const ScorePage = () => {
     dispatch(fetchTopUsersRequest());
   }, [dispatch]);
 
+  const renderedTopUsers = useMemo(
+    () =>
+      topUsers.map(({ username, tasksCount, id }: TopUser, index: number) => (
+        <TableRow
+          key={id}
+          style={{
+            backgroundColor: fade(COLORS.LIGHT_BLUE, (3 - index) * 0.33),
+          }}
+        >
+          <TableCell>{username}</TableCell>
+          <TableCell align="right">{tasksCount}</TableCell>
+        </TableRow>
+      )),
+    [topUsers]
+  );
+
   return (
     <div className={classes.container}>
       <TableContainer className={classes.table} component={Paper}>
@@ -38,24 +54,7 @@ const ScorePage = () => {
               <TableCell align="right">Tasks count</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            {topUsers.map(
-              ({ username, tasksCount }: TopUser, index: number) => (
-                <TableRow
-                  key={username}
-                  style={{
-                    backgroundColor: fade(
-                      COLORS.LIGHT_BLUE,
-                      (3 - index) * 0.33
-                    ),
-                  }}
-                >
-                  <TableCell>{username}</TableCell>
-                  <TableCell align="right">{tasksCount}</TableCell>
-                </TableRow>
-              )
-            )}
-          </TableBody>
+          <TableBody>{renderedTopUsers}</TableBody>
         </Table>
       </TableContainer>
     </div>
