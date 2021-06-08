@@ -6,6 +6,10 @@ export const ActionTypes = {
   FETCH_TOP_USERS_FAILURE: `${prefix}/FETCH_TOP_USERS_FAILURE`,
 };
 
+export enum SocketEvents {
+  updated = "score:updated",
+}
+
 export interface ScoreState {
   topUsers: TopUser[];
   isLoading: boolean;
@@ -14,6 +18,7 @@ export interface ScoreState {
 
 export interface TopUser {
   username: string;
+  id: number;
   tasksCount: number;
 }
 
