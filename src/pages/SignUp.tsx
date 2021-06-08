@@ -3,10 +3,9 @@ import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
-import CONSTS from "../const";
 import { signUpRequest } from "../redux/auth/actions";
 
-const { COLORS, ROUTES } = CONSTS;
+import { COLORS, ROUTES } from "../const";
 
 const SignUpPage = () => {
   const classes = useStyles();

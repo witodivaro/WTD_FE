@@ -3,10 +3,8 @@ import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
-import CONSTS from "../const";
+import { COLORS, ROUTES } from "../const";
 import { loginRequest } from "../redux/auth/actions";
-
-const { COLORS, ROUTES } = CONSTS;
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -34,6 +32,7 @@ const LoginPage = () => {
             name="username"
             label="Name"
             onChange={handleChange}
+            value={values.username}
           />
           <TextField
             className={classes.input}
@@ -41,6 +40,7 @@ const LoginPage = () => {
             type="password"
             label="Password"
             onChange={handleChange}
+            value={values.password}
           />
           <Link to={ROUTES.SIGN_UP} className={classes.link}>
             I don't have an account

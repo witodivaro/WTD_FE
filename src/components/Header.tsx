@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { setFilter, setIsAddingNewTask } from "../redux/tasks/actions";
 
-import CONSTS from "../const";
+import { COLORS, ROUTES } from "../const";
 
 import { Filters } from "../redux/tasks/types";
 import { selectFilter, selectIsAddingNewTask } from "../redux/tasks/selectors";
@@ -11,8 +11,6 @@ import { Link, useHistory, useLocation } from "react-router-dom";
 
 import { selectIsAuthenticated } from "../redux/auth/selectors";
 import { logout } from "../redux/auth/actions";
-
-const { COLORS, ROUTES } = CONSTS;
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -41,8 +39,8 @@ const Header = () => {
     dispatch(logout());
   };
 
-  const navigateToLogin = () => {
-    history.push("/login");
+  const createNavigationHandler = (path: string) => () => {
+    history.push(path);
   };
 
   const renderedFilters =
@@ -80,16 +78,13 @@ const Header = () => {
     ) : null;
 
   const renderedAuthButton = isAuthenticated ? (
-    <Button
-      onClick={handleLogout}
-      className={`${classes.link} ${classes.linkRight}`}
-    >
+    <Button onClick={handleLogout} className={`${classes.link}`}>
       Logout
     </Button>
   ) : (
     <Button
       className={`${classes.link} ${classes.linkRight}`}
-      onClick={navigateToLogin}
+      onClick={createNavigationHandler(ROUTES.LOGIN)}
     >
       Login
     </Button>
@@ -104,6 +99,14 @@ const Header = () => {
           </Link>
         )}
         {renderedFilters}
+        {isAuthenticated && (
+          <Button
+            className={`${classes.link} ${classes.linkRight}`}
+            onClick={createNavigationHandler(ROUTES.SCORE)}
+          >
+            Score
+          </Button>
+        )}
         {renderedAuthButton}
       </div>
     </div>

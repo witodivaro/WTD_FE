@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { useSelector } from "react-redux";
-import { Redirect, Route, RouteProps } from "react-router";
+import { Redirect, Route, RouteProps, useHistory } from "react-router";
 import { selectIsAuthenticated } from "../redux/auth/selectors";
 
 import { selectUserRole } from "../redux/user/selectors";
@@ -8,7 +8,7 @@ import { selectUserRole } from "../redux/user/selectors";
 interface IProps extends RouteProps {
   role?: string | null;
   authenticated?: boolean;
-  redirectTo: string;
+  redirectTo?: string;
   children: ReactNode;
 }
 
@@ -21,13 +21,18 @@ const PrivateRoute = ({
 }: IProps) => {
   const userRole = useSelector(selectUserRole);
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const history = useHistory();
 
   switch (true) {
     case authenticated && !isAuthenticated:
     case !authenticated && isAuthenticated:
     case role && userRole !== role:
     case !role && userRole:
-      return <Redirect to={redirectTo} />;
+      if (redirectTo) {
+        return <Redirect to={redirectTo} />;
+      }
+
+      history.goBack();
   }
 
   return <Route {...props}>{children}</Route>;

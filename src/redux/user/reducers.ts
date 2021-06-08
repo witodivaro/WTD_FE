@@ -3,6 +3,9 @@ import { ActionTypes, UserState } from "./types";
 
 const initialState: UserState = {
   user: null,
+  isEmailVerificationSuccess: false,
+  isLoading: false,
+  errors: null,
 };
 
 export const userReducer = (
@@ -14,6 +17,27 @@ export const userReducer = (
       return {
         ...state,
         user: payload.user,
+      };
+
+    case ActionTypes.VERIFICATE_EMAIL_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+
+    case ActionTypes.VERIFICATE_EMAIL_SUCCESS:
+      return {
+        ...state,
+        isEmailVerificationSuccess: true,
+        isLoading: false,
+      };
+
+    case ActionTypes.VERIFICATE_EMAIL_FAILURE:
+      return {
+        ...state,
+        isEmailVerificationSuccess: false,
+        isLoading: false,
+        errors: payload.errors,
       };
 
     case RESET_STORE:

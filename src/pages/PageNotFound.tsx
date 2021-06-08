@@ -1,5 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 
+import pageNotFoundSrc from "../assets/404.png";
+
 const useStyles = makeStyles({
   pageContainer: {
     width: "1000px",
@@ -19,7 +21,7 @@ const PageNotFound = () => {
     <div className={classes.pageContainer}>
       <img
         className={classes.img}
-        src="assets/404.png"
+        src={pageNotFoundSrc}
         alt="Page not found"
       ></img>
     </div>

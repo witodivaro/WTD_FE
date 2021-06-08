@@ -11,6 +11,12 @@ export const ActionTypes = {
 
   LOGOUT: `${prefix}/LOGOUT`,
   LOGOUT_SUCCESS: `${prefix}/LOGOUT_SUCCESS`,
+
+  SET_ACCESS_TOKEN: `${prefix}/SET_ACCESS_TOKEN`,
+
+  CHECK_AUTH: `${prefix}/CHECK_AUTH`,
+  CHECK_AUTH_SUCCESS: `${prefix}/CHECK_AUTH_SUCCESS`,
+  CHECK_AUTH_FAILURE: `${prefix}/CHECK_AUTH_FAILURE`,
 };
 
 export const RESET_STORE = "RESET_STORE";
@@ -18,6 +24,8 @@ export const RESET_STORE = "RESET_STORE";
 export interface AuthState {
   isLoading: boolean;
   isAuthenticated: boolean;
+  isCheckingAuth: boolean;
+  accessToken: string;
 }
 
 export interface ILoginRequest {
@@ -65,4 +73,11 @@ export interface ILogout {
 
 export interface ILogoutSuccess {
   type: string;
+}
+
+export interface ISetAccessToken {
+  type: string;
+  payload: {
+    accessToken: string;
+  };
 }

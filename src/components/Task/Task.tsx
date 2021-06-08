@@ -12,11 +12,9 @@ import { useDispatch } from "react-redux";
 
 import { Task as TaskType } from "../../redux/tasks/types";
 
-import CONSTS from "../../const";
+import { COLORS } from "../../const";
 import { useCallback } from "react";
 import { changeTaskArchivedRequest } from "../../redux/tasks/actions";
-
-const { COLORS } = CONSTS;
 
 const useStyles = makeStyles({
   card: {

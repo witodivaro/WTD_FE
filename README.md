@@ -53,26 +53,40 @@ It can be helpful to know what all these different files are for:
 
 ```
 /
-├─ node_modules/     # packages installed by Yarn
+├─ node_modules/         # packages installed by Yarn
 │
-├─ public/           # static files
+├─ public/               # static files
 │  ├─ index.html
 │  └─ manifest.json
 │
 ├─ src/
 │  │
-│  ├─ components/    # Components  
+│  ├─ components/        # Components  
 │  │
-│  ├─ redux/         # Actions, sagas and reducers
-│  │  ├─ tasks/      # …for tasks flow
-│  │  ├─ root.ts     # for rootSaga and rootReducer 
-│  │  └─ store.ts    # App's store
+│  ├─ const/             # Constants
+│  │
+│  ├─ redux/             # Actions, sagas and reducers
+│  │  ├─ tasks/          # …for tasks flow
+│  │  ├─ user/           # …for user flow
+│  │  |  ├─ actions.ts   # User actions
+│  │  |  ├─ reducers.ts  # User reducer
+│  │  |  ├─ sagas.ts     # User sagas 
+│  │  |  ├─ selectors.ts # User selectors 
+│  │  |  ├─ types.ts     # User types (Action types, action interfaces, etc.)
+│  │  |  └─ index.ts     # Exports all these files
+│  │  │
+│  │  ├─ root.ts         # for rootSaga and rootReducer 
+│  │  └─ store.ts        # App's store
 │  |
-│  ├─ pages/         # Pages
+│  ├─ types/             # Global application types
+│  |
+│  ├─ pages/             # Pages
+│  |
+│  ├─ utils/             # Utility functions
 │  │
-│  ├─ App.tsx        # Root component of the react app
-│  ├─ index.tsx      # Entry point for an app
-│  └─ index.scss     # Global application styles
+│  ├─ App.tsx            # Root component of the react app
+│  ├─ index.tsx          # Entry point for the app
+│  └─ index.scss         # Global application styles
 │
 ├─ .gitignore        # List of files and folders not tracked by Git
 ├─ package.json      # Installed dependencies

@@ -8,6 +8,7 @@ import {
   ISignUpSuccess,
   ILogout,
   ILogoutSuccess,
+  ISetAccessToken,
 } from "./types";
 
 export const loginRequest = ({
@@ -50,6 +51,25 @@ export const signUpSuccess = (): ISignUpSuccess => ({
 export const signUpFailure = (errors: any): ISignUpFailure => ({
   type: ActionTypes.SIGN_UP_FAILURE,
   payload: { errors },
+});
+
+export const setAccessToken = (accessToken: string): ISetAccessToken => ({
+  type: ActionTypes.SET_ACCESS_TOKEN,
+  payload: {
+    accessToken,
+  },
+});
+
+export const checkAuth = () => ({
+  type: ActionTypes.CHECK_AUTH,
+});
+
+export const checkAuthSuccess = () => ({
+  type: ActionTypes.CHECK_AUTH_SUCCESS,
+});
+
+export const checkAuthFailure = () => ({
+  type: ActionTypes.CHECK_AUTH_FAILURE,
 });
 
 export const logout = (): ILogout => ({

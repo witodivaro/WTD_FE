@@ -1,16 +1,21 @@
-import { call, put, takeLatest, all } from "@redux-saga/core/effects";
+import { call, put, takeLatest, all, select } from "@redux-saga/core/effects";
 
 import axios, { setAuthToken } from "../../utils/axios";
 import { setUser } from "../user/actions";
 import {
+  checkAuthFailure,
+  checkAuthSuccess,
   loginFailure,
   loginSuccess,
+  setAccessToken,
   signUpFailure,
   signUpSuccess,
 } from "./actions";
+import { selectAccessToken } from "./selectors";
 import {
   ActionTypes,
   ILoginRequest,
+  ISetAccessToken,
   ISignUpRequest,
   RESET_STORE,
 } from "./types";
@@ -28,7 +33,7 @@ function* login({ payload }: ILoginRequest) {
 
     const { token, user } = data;
 
-    setAuthToken(token);
+    yield put(setAccessToken(token));
     yield put(loginSuccess());
     yield put(setUser(user));
   } catch (error) {
@@ -50,8 +55,7 @@ function* signUp({ payload }: ISignUpRequest) {
 
     const { user, token } = data;
 
-    setAuthToken(token);
-
+    yield put(setAccessToken(token));
     yield put(signUpSuccess());
     yield put(setUser(user));
   } catch (error) {
@@ -61,6 +65,31 @@ function* signUp({ payload }: ISignUpRequest) {
 
 function* logout() {
   yield put({ type: RESET_STORE });
+}
+
+function* checkAuth(): Generator<any, any, any> {
+  try {
+    const token = yield select(selectAccessToken);
+
+    yield call(
+      axios.post,
+      "/user/check-token",
+      {},
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    setAuthToken(token);
+
+    yield put(checkAuthSuccess());
+  } catch (error) {
+    yield put(checkAuthFailure());
+  }
+}
+
+function* setToken({ payload }: ISetAccessToken) {
+  const { accessToken } = payload;
+
+  yield setAuthToken(accessToken);
 }
 
 function* watchLoginRequest() {
@@ -75,6 +104,20 @@ function* watchLogout() {
   yield takeLatest(ActionTypes.LOGOUT, logout);
 }
 
+function* watchCheckAuth() {
+  yield takeLatest(ActionTypes.CHECK_AUTH, checkAuth);
+}
+
+function* watchSetAccessToken() {
+  yield takeLatest(ActionTypes.SET_ACCESS_TOKEN, setToken);
+}
+
 export function* authSagas() {
-  yield all([watchLoginRequest(), watchSignUpRequest(), watchLogout()]);
+  yield all([
+    watchLoginRequest(),
+    watchSignUpRequest(),
+    watchCheckAuth(),
+    watchLogout(),
+    watchSetAccessToken(),
+  ]);
 }

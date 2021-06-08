@@ -21,18 +21,6 @@ import {
 
 import { Task as TaskType } from "../redux/tasks/types";
 
-const useStyles = makeStyles({
-  container: {
-    padding: "20px 0",
-    width: "1000px",
-    margin: "0 auto",
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr 1fr",
-    gridAutoRows: "300px",
-    justifyContent: "space-between",
-  },
-});
-
 const TasksPage = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -126,5 +114,17 @@ const TasksPage = () => {
     </div>
   );
 };
+
+const useStyles = makeStyles({
+  container: {
+    padding: "20px 0",
+    width: "1000px",
+    margin: "0 auto",
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr 1fr",
+    gridAutoRows: "300px",
+    justifyContent: "space-between",
+  },
+});
 
 export default TasksPage;
