@@ -1,2 +1,2 @@
 export { authSagas } from "./sagas";
-export { persistedAuthReducer } from "./reducers";
+export { authReducer } from "./reducers";

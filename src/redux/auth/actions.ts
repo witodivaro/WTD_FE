@@ -8,7 +8,6 @@ import {
   ISignUpSuccess,
   ILogout,
   ILogoutSuccess,
-  ISetAccessToken,
 } from "./types";
 
 export const loginRequest = ({
@@ -48,28 +47,35 @@ export const signUpSuccess = (): ISignUpSuccess => ({
   type: ActionTypes.SIGN_UP_SUCCESS,
 });
 
-export const signUpFailure = (errors: any): ISignUpFailure => ({
+export const signUpFailure = (error: any): ISignUpFailure => ({
   type: ActionTypes.SIGN_UP_FAILURE,
-  payload: { errors },
+  payload: { error },
 });
 
-export const setAccessToken = (accessToken: string): ISetAccessToken => ({
-  type: ActionTypes.SET_ACCESS_TOKEN,
-  payload: {
-    accessToken,
-  },
+export const checkAccessToken = () => ({
+  type: ActionTypes.CHECK_ACCESS_TOKEN_REQUEST,
 });
 
-export const checkAuth = () => ({
-  type: ActionTypes.CHECK_AUTH,
+export const checkAccessTokenSuccess = () => ({
+  type: ActionTypes.CHECK_ACCESS_TOKEN_SUCCESS,
 });
 
-export const checkAuthSuccess = () => ({
-  type: ActionTypes.CHECK_AUTH_SUCCESS,
+export const checkAccessTokenFailure = (error: any) => ({
+  type: ActionTypes.CHECK_ACCESS_TOKEN_FAILURE,
+  payload: { error },
 });
 
-export const checkAuthFailure = () => ({
-  type: ActionTypes.CHECK_AUTH_FAILURE,
+export const refreshTokensRequest = () => ({
+  type: ActionTypes.REFRESH_TOKENS_REQUEST,
+});
+
+export const refreshTokensSuccess = () => ({
+  type: ActionTypes.REFRESH_TOKENS_SUCCESS,
+});
+
+export const refreshTokensFailure = (error: any) => ({
+  type: ActionTypes.REFRESH_TOKENS_FAILURE,
+  payload: { error },
 });
 
 export const logout = (): ILogout => ({

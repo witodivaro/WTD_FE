@@ -12,11 +12,13 @@ export const ActionTypes = {
   LOGOUT: `${prefix}/LOGOUT`,
   LOGOUT_SUCCESS: `${prefix}/LOGOUT_SUCCESS`,
 
-  SET_ACCESS_TOKEN: `${prefix}/SET_ACCESS_TOKEN`,
+  CHECK_ACCESS_TOKEN_REQUEST: `${prefix}/CHECK_ACCESS_TOKEN_REQUEST`,
+  CHECK_ACCESS_TOKEN_SUCCESS: `${prefix}/CHECK_ACCESS_TOKEN_SUCCESS`,
+  CHECK_ACCESS_TOKEN_FAILURE: `${prefix}/CHECK_ACCESS_TOKEN_FAILURE`,
 
-  CHECK_AUTH: `${prefix}/CHECK_AUTH`,
-  CHECK_AUTH_SUCCESS: `${prefix}/CHECK_AUTH_SUCCESS`,
-  CHECK_AUTH_FAILURE: `${prefix}/CHECK_AUTH_FAILURE`,
+  REFRESH_TOKENS_REQUEST: `${prefix}/REFRESH_TOKENS_REQUEST`,
+  REFRESH_TOKENS_SUCCESS: `${prefix}/REFRESH_TOKENS_SUCCESS`,
+  REFRESH_TOKENS_FAILURE: `${prefix}/REFRESH_TOKENS_FAILURE`,
 };
 
 export const RESET_STORE = "RESET_STORE";
@@ -25,7 +27,7 @@ export interface AuthState {
   isLoading: boolean;
   isAuthenticated: boolean;
   isCheckingAuth: boolean;
-  accessToken: string;
+  error: any;
 }
 
 export interface ILoginRequest {
@@ -63,7 +65,7 @@ export interface ISignUpSuccess {
 export interface ISignUpFailure {
   type: string;
   payload: {
-    errors: any;
+    error: any;
   };
 }
 
@@ -73,11 +75,4 @@ export interface ILogout {
 
 export interface ILogoutSuccess {
   type: string;
-}
-
-export interface ISetAccessToken {
-  type: string;
-  payload: {
-    accessToken: string;
-  };
 }

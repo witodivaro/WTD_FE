@@ -1,16 +1,13 @@
-import persistReducer from "redux-persist/es/persistReducer";
-import storage from "redux-persist/lib/storage";
-
 import { ActionTypes, AuthState, RESET_STORE } from "./types";
 
 const initialState: AuthState = {
   isLoading: false,
   isAuthenticated: false,
-  accessToken: "",
   isCheckingAuth: true,
+  error: null,
 };
 
-const authReducer = (
+export const authReducer = (
   state: AuthState = initialState,
   { type, payload }: { type: string; payload?: any }
 ) => {
@@ -30,30 +27,33 @@ const authReducer = (
         isLoading: false,
       };
 
-    case ActionTypes.SET_ACCESS_TOKEN:
-      return {
-        ...state,
-        accessToken: payload.accessToken,
-      };
-
-    case ActionTypes.CHECK_AUTH:
+    case ActionTypes.CHECK_ACCESS_TOKEN_REQUEST:
       return {
         ...state,
         isCheckingAuth: true,
       };
 
-    case ActionTypes.CHECK_AUTH_SUCCESS:
+    case ActionTypes.REFRESH_TOKENS_SUCCESS:
+    case ActionTypes.CHECK_ACCESS_TOKEN_SUCCESS:
       return {
         ...state,
-        isAuthenticated: true,
         isCheckingAuth: false,
+        isAuthenticated: true,
       };
 
-    case ActionTypes.CHECK_AUTH_FAILURE:
+    case ActionTypes.REFRESH_TOKENS_FAILURE:
+    case ActionTypes.CHECK_ACCESS_TOKEN_FAILURE:
       return {
         ...state,
-        isAuthenticated: false,
         isCheckingAuth: false,
+        isAuthenticated: false,
+      };
+
+    case ActionTypes.SIGN_UP_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        error: payload.error,
       };
 
     case ActionTypes.LOGOUT:
@@ -69,12 +69,3 @@ const authReducer = (
       return state;
   }
 };
-
-export const persistedAuthReducer = persistReducer(
-  {
-    key: "accessToken",
-    whitelist: ["accessToken"],
-    storage,
-  },
-  authReducer
-);

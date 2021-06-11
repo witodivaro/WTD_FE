@@ -1,15 +1,17 @@
 import { Box, Button, fade, makeStyles, TextField } from "@material-ui/core";
 import { useFormik } from "formik";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { signUpRequest } from "../redux/auth/actions";
 
 import { COLORS, ROUTES } from "../const";
+import { selectError } from "../redux/auth/selectors";
 
 const SignUpPage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const errors = useSelector(selectError);
 
   const initialValues = {
     email: "",

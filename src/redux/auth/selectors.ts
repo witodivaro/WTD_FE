@@ -14,9 +14,9 @@ export const selectIsAuthenticated = createSelector(
   (state) => state.isAuthenticated
 );
 
-export const selectAccessToken = createSelector(
+export const selectError = createSelector(
   selectAuthState,
-  (state) => state.accessToken
+  (state) => state.error
 );
 
 export const selectIsCheckingAuth = createSelector(

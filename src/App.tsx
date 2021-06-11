@@ -1,6 +1,4 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 import {
   LoginPage,
@@ -13,18 +11,19 @@ import {
 import Header from "./components/Header";
 import PrivateRoute from "./components/PrivateRoute";
 
-import { checkAuth } from "./redux/auth/actions";
-import { selectIsCheckingAuth } from "./redux/auth/selectors";
-
 import ROUTES from "./const/routes";
 import EmailVerificationPage from "./pages/EmailVerification";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { checkAccessToken } from "./redux/auth/actions";
+import { selectIsCheckingAuth } from "./redux/auth/selectors";
 
 function App() {
   const dispatch = useDispatch();
   const isCheckingAuth = useSelector(selectIsCheckingAuth);
 
   useEffect(() => {
-    dispatch(checkAuth());
+    dispatch(checkAccessToken());
   }, [dispatch]);
 
   if (isCheckingAuth) {

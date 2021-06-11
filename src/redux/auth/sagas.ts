@@ -1,21 +1,21 @@
-import { call, put, takeLatest, all, select } from "@redux-saga/core/effects";
+import { call, put, takeLatest, all } from "@redux-saga/core/effects";
 
-import axios, { setAuthToken } from "../../utils/axios";
+import axios from "../../utils/axios";
 import { setUser } from "../user/actions";
 import {
-  checkAuthFailure,
-  checkAuthSuccess,
+  checkAccessTokenFailure,
+  checkAccessTokenSuccess,
   loginFailure,
   loginSuccess,
-  setAccessToken,
   signUpFailure,
   signUpSuccess,
+  refreshTokensRequest,
+  refreshTokensFailure,
+  refreshTokensSuccess,
 } from "./actions";
-import { selectAccessToken } from "./selectors";
 import {
   ActionTypes,
   ILoginRequest,
-  ISetAccessToken,
   ISignUpRequest,
   RESET_STORE,
 } from "./types";
@@ -31,9 +31,8 @@ function* login({ payload }: ILoginRequest) {
   try {
     const { data } = yield call(axios.post, "/user/login", axiosPayload);
 
-    const { token, user } = data;
+    const { user } = data;
 
-    yield put(setAccessToken(token));
     yield put(loginSuccess());
     yield put(setUser(user));
   } catch (error) {
@@ -53,9 +52,8 @@ function* signUp({ payload }: ISignUpRequest) {
   try {
     const { data } = yield call(axios.post, "/user/sign-up", axiosPayload);
 
-    const { user, token } = data;
+    const { user } = data;
 
-    yield put(setAccessToken(token));
     yield put(signUpSuccess());
     yield put(setUser(user));
   } catch (error) {
@@ -63,33 +61,30 @@ function* signUp({ payload }: ISignUpRequest) {
   }
 }
 
-function* logout() {
-  yield put({ type: RESET_STORE });
-}
-
-function* checkAuth(): Generator<any, any, any> {
+function* checkAccessToken() {
   try {
-    const token = yield select(selectAccessToken);
+    yield call(axios.post, "/user/check-access-token");
 
-    yield call(
-      axios.post,
-      "/user/check-token",
-      {},
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-
-    setAuthToken(token);
-
-    yield put(checkAuthSuccess());
+    yield put(checkAccessTokenSuccess());
   } catch (error) {
-    yield put(checkAuthFailure());
+    if (!error.isTokenExpired) {
+      yield put(checkAccessTokenFailure(error));
+    }
   }
 }
 
-function* setToken({ payload }: ISetAccessToken) {
-  const { accessToken } = payload;
+function* refreshTokens() {
+  try {
+    yield call(axios.post, "/user/refresh-token");
 
-  yield setAuthToken(accessToken);
+    yield put(refreshTokensSuccess());
+  } catch (error) {
+    yield put(refreshTokensFailure(error));
+  }
+}
+
+function* logout() {
+  yield put({ type: RESET_STORE });
 }
 
 function* watchLoginRequest() {
@@ -100,24 +95,23 @@ function* watchSignUpRequest() {
   yield takeLatest(ActionTypes.SIGN_UP_REQUEST, signUp);
 }
 
+function* watchCheckAccessTokenRequest() {
+  yield takeLatest(ActionTypes.CHECK_ACCESS_TOKEN_REQUEST, checkAccessToken);
+}
+function* watchRefreshTokens() {
+  yield takeLatest(ActionTypes.REFRESH_TOKENS_REQUEST, refreshTokens);
+}
+
 function* watchLogout() {
   yield takeLatest(ActionTypes.LOGOUT, logout);
-}
-
-function* watchCheckAuth() {
-  yield takeLatest(ActionTypes.CHECK_AUTH, checkAuth);
-}
-
-function* watchSetAccessToken() {
-  yield takeLatest(ActionTypes.SET_ACCESS_TOKEN, setToken);
 }
 
 export function* authSagas() {
   yield all([
     watchLoginRequest(),
     watchSignUpRequest(),
-    watchCheckAuth(),
+    watchCheckAccessTokenRequest(),
+    watchRefreshTokens(),
     watchLogout(),
-    watchSetAccessToken(),
   ]);
 }
