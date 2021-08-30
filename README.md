@@ -2,7 +2,20 @@
 
 ## Technology stack and details
 
-TypeScript, React.js, Redux, Sagas, Reselect
+### Language:
+TypeScript 
+
+### Framework:
+React.js
+
+### Framework additions:
+Redux, Redux-Sagas, Reselect, react-datepicker
+
+### Bootstrap:
+create-react-app
+
+### Network:
+axios, socket.io-client
 
 ### Styles:
 Material UI (responsive)
