@@ -35,7 +35,6 @@ export const selectFilteredTasks = createSelector(
   selectTasks,
   selectFilter,
   (tasks, filter) => {
-    console.log(tasks);
     switch (filter) {
       case Filters.ALL:
         return tasks.filter((task) => !task.isArchived);
