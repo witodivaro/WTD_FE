@@ -15,6 +15,7 @@ import InputColor from "react-input-color";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { COLORS } from "../../const";
+import { ONE_DAY_IN_MS } from "../../const/constants";
 
 import { Task } from "../../redux/tasks/types";
 
@@ -116,7 +117,7 @@ const EditTask = ({ task, onSave, onCancel, onDelete, shrink }: Props) => {
   const initialValues = {
     text: text || "",
     type: type || "",
-    dueDate: dueDate || new Date(),
+    dueDate: dueDate || new Date(Date.now() + ONE_DAY_IN_MS),
     color: color || "",
   };
 

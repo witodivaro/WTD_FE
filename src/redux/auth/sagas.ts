@@ -9,7 +9,6 @@ import {
   loginSuccess,
   signUpFailure,
   signUpSuccess,
-  refreshTokensRequest,
   refreshTokensFailure,
   refreshTokensSuccess,
 } from "./actions";
