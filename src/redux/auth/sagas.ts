@@ -74,7 +74,7 @@ function* checkAccessToken() {
 
 function* refreshTokens() {
   try {
-    yield call(axios.post, "/user/refresh-token");
+    yield call(axios.post, "/auth/refresh-token");
 
     yield put(refreshTokensSuccess());
   } catch (error) {

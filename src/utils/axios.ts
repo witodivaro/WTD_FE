@@ -3,7 +3,7 @@ import axios, { AxiosInstance } from "axios";
 import { logout, refreshTokensRequest } from "../redux/auth/actions";
 import { store } from "../redux/store";
 
-const REFRESH_TOKEN_URL = "/user/refresh-token";
+const REFRESH_TOKEN_URL = "/auth/refresh-token";
 
 const instance = axios.create({
   baseURL: "http://localhost:3002",
