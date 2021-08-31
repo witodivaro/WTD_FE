@@ -28,7 +28,7 @@ function* login({ payload }: ILoginRequest) {
   };
 
   try {
-    const { data } = yield call(axios.post, "/user/login", axiosPayload);
+    const { data } = yield call(axios.post, "/auth/login", axiosPayload);
 
     const { user } = data;
 
@@ -49,7 +49,7 @@ function* signUp({ payload }: ISignUpRequest) {
   };
 
   try {
-    const { data } = yield call(axios.post, "/user/sign-up", axiosPayload);
+    const { data } = yield call(axios.post, "/auth/sign-up", axiosPayload);
 
     const { user } = data;
 
@@ -62,7 +62,7 @@ function* signUp({ payload }: ISignUpRequest) {
 
 function* checkAccessToken() {
   try {
-    yield call(axios.post, "/user/check-access-token");
+    yield call(axios.post, "/auth/check-access-token");
 
     yield put(checkAccessTokenSuccess());
   } catch (error) {

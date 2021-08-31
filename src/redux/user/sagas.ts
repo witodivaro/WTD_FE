@@ -14,7 +14,7 @@ function* verificateEmail({ payload }: IVerificateEmail) {
   };
 
   try {
-    yield call(axios.post, "/user/verificate-email", axiosPayload);
+    yield call(axios.post, "/auth/verificate-email", axiosPayload);
 
     yield put(verificateEmailSuccess());
   } catch (error) {
