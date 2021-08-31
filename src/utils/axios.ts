@@ -8,6 +8,8 @@ const REFRESH_TOKEN_URL = "/user/refresh-token";
 const instance = axios.create({
   baseURL: "http://localhost:3002",
   withCredentials: true,
+  xsrfCookieName: "_csrf",
+  xsrfHeaderName: 'X-CSRF-TOKEN',
 });
 
 instance.interceptors.response.use(
@@ -66,7 +68,7 @@ const axiosProxy = new Proxy(instance, {
             check();
           });
         } else {
-          return error;
+          throw error;
         }
       }
     };
