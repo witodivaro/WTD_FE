@@ -1,6 +1,8 @@
 import { call, put, takeLatest, all } from "@redux-saga/core/effects";
 
 import axios from "../../utils/axios";
+import socket from "../../utils/socket";
+import { getCookies } from "../../utils/utils";
 import { setUser } from "../user/actions";
 import {
   checkAccessTokenFailure,
@@ -64,8 +66,11 @@ function* checkAccessToken() {
   try {
     yield call(axios.post, "/auth/check-access-token");
 
+    const { _csrf } = getCookies();
+    socket.connect(_csrf);
+
     yield put(checkAccessTokenSuccess());
-  } catch (error) {
+  } catch (error: any) {
     if (!error.isTokenExpired) {
       yield put(checkAccessTokenFailure(error));
     }

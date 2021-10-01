@@ -33,16 +33,19 @@ function* watchFetchTopUsersRequest() {
   yield takeLatest(ActionTypes.FETCH_TOP_USERS_REQUEST, fetchTopUsers);
 }
 
-socket.on(SocketEvents.updated, (userInfo: UserInfo[]) => {
-  const topUsers: TopUser[] = userInfo.map(
-    ({ tasksCount, user: { username, id } }: UserInfo) => ({
-      tasksCount: Number(tasksCount),
-      username,
-      id,
-    })
-  );
+socket.addListener({
+  event: SocketEvents.updated,
+  handler: (userInfo: UserInfo[]) => {
+    const topUsers: TopUser[] = userInfo.map(
+      ({ tasksCount, user: { username, id } }: UserInfo) => ({
+        tasksCount: Number(tasksCount),
+        username,
+        id,
+      })
+    );
 
-  store.dispatch(fetchTopUsersSuccess(topUsers));
+    store.dispatch(fetchTopUsersSuccess(topUsers));
+  },
 });
 
 export function* scoreSagas() {

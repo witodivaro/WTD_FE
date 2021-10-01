@@ -40,7 +40,7 @@ const axiosProxy = new Proxy(instance, {
         }
 
         return response;
-      } catch (error) {
+      } catch (error: any) {
         if (error.response?.status === 401) {
           tokensRefreshed = false;
 
